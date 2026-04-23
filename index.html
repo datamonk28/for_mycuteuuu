@@ -663,7 +663,7 @@ body{
 
       <div class="poem-block" data-poem>
         <div class="poem-title" onclick="burstAt(event)">Yours</div>
-        <div class="poem-body" data-lines="Whatever shape the years may take,|whatever roads I walk alone —|know this: my dearest, softest place|is wherever you call home.||I do not ask the sky for much,|only that it holds you in its blue —|for all I need of this whole earth|is one small, sacred thing — and that is you."></div>
+        <div class="poem-body" data-lines="Loved you for no reason at all,|yet your absence carried a weight|I could feel in my bones.|Still, I waited —|because somehow I knew|life would feel incomplete|without those beautiful eyes.||Waiting, though, became its own strange dream —|a quiet, surreal space|between longing and hope.|And then your voice —|after all that silence —|fell on my ears like a natural kind of bliss,|as if it had always belonged there.||Those glistening, tear-kissed eyes,|that gentle curve of your nose —|it felt like discovering a forgotten wonder|I never truly lost.||Words failed me in that moment;|I could only stand there, stunned —|seeing my girl again,|radiant, impossibly beautiful.||This love — this rush, this quiet addiction —|it lingers like a sweet ache in my veins.|And I will wait, as long as it takes,|just to feel it all over again."></div>
       </div>
     </div>
   </div>
@@ -853,18 +853,34 @@ function wrapWords(el){
 /* ══════════════════════════════════════
    PHOTOS
 ══════════════════════════════════════ */
-const captions=['Our first smile','In my favourite light','This one lives in my heart','You, simply you','Golden hour & you','A memory I treasure'];
+const PHOTOS = [
+  { src: 'photos/photo1.jpg', cap: 'Our first smile' },
+  { src: 'photos/photo2.jpg', cap: 'In my favourite light' },
+  { src: 'photos/photo3.jpg', cap: 'This one lives in my heart' },
+  { src: 'photos/photo4.jpg', cap: 'You, simply you' },
+  { src: 'photos/photo5.jpg', cap: 'Golden hour & you' },
+  { src: 'photos/photo6.jpg', cap: 'A memory I treasure' },
+];
+
 function buildPhotos(){
   const grid=document.getElementById('photo-grid');
-  captions.forEach(cap=>{
+  PHOTOS.forEach(({src, cap})=>{
     const card=document.createElement('div'); card.className='photo-card';
-    card.innerHTML = `
-  <img src="photos/photo${captions.indexOf(cap)+1}.jpg" alt="${cap}"/>
-  <div class="photo-overlay"><div class="photo-overlay-text">${cap}</div></div>`;
+    card.innerHTML=`
+      <img src="${src}" alt="${cap}" onerror="this.parentElement.querySelector('.photo-placeholder').style.display='flex';this.style.display='none'"/>
+      <div class="photo-placeholder" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        <span class="cap">${cap}</span>
+      </div>
+      <div class="photo-overlay"><div class="photo-overlay-text">${cap}</div></div>`;
     card.addEventListener('click',e=>{
       burstAt(e,e.clientX,e.clientY,20);
       const img=card.querySelector('img');
-      if(img) openLightbox(img.src);
+      if(img && img.style.display!=='none') openLightbox(img.src);
       else{ card.style.boxShadow='0 0 40px #d4607a88'; setTimeout(()=>card.style.boxShadow='',700); }
     });
     grid.appendChild(card);
